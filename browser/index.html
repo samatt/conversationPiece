@@ -32,9 +32,13 @@
       // After they answer, we'll get a 'stream' event with their stream  
       call.on('stream', function(remoteStream) {
         console.log("Got remote stream ");
-        var videoElement = document.getElementById('otherVideo');
+        var ovideoElement = document.createElement('video');
+            ovideoElement.src = window.URL.createObjectURL(remoteStream) || remoteStream;
+            document.body.appendChild(ovideoElement);
+            ovideoElement.play();
+        // var videoElement = document.getElementById('otherVideo');
   
-        videoElement.src = window.URL.createObjectURL(remoteStream) || remoteStream;
+        // videoElement.src = window.URL.createObjectURL(remoteStream) || remoteStream;
       });
     }  
     var peerOpen =  function(id) {
@@ -51,9 +55,10 @@
         incoming_call.answer(mystream); // Answer the call with our stream from getUserMedia
         incoming_call.on('stream', function(remoteStream) {  // we receive a getUserMedia stream from the remote caller
           // And attach it to a video object
-          var ovideoElement = document.getElementById('otherVideo');
-          ovideoElement.src = window.URL.createObjectURL(remoteStream) || remoteStream;
-          ovideoElement.play();
+          var ovideoElement = document.createElement('video');
+            ovideoElement.src = window.URL.createObjectURL(remoteStream) || remoteStream;
+            document.body.appendChild(ovideoElement);
+            ovideoElement.play();
         });
     }
     var peerConnection = function(incoming_data){
@@ -116,7 +121,7 @@
 
 <body onload ="init()">
 <video id="myVideo" width="320" height="240"  ></video>
-<video id="otherVideo" width="320" height="240"  ></video>
+<!-- <video id="otherVideo" width="320" height="240"  ></video> -->
 </body>
  
 </html>
