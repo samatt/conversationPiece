@@ -27,14 +27,14 @@
       console.log("Calling peer: " + peer_ids);           
       var call = peer.call(peer_ids, mystream);
       
-      console.log("Establishing data connection with user: " + peer_ids);           
+      console.log("Establishing connection with user: " + peer_ids);           
 
       // After they answer, we'll get a 'stream' event with their stream  
       call.on('stream', function(remoteStream) {
-        console.log("Got remote stream");
-        var ovideoElement = document.getElementById('otherVideo');
+        console.log("Got remote stream ");
+        var videoElement = document.getElementById('otherVideo');
   
-        ovideoElement.src = window.URL.createObjectURL(remoteStream) || remoteStream;
+        videoElement.src = window.URL.createObjectURL(remoteStream) || remoteStream;
       });
     }  
     var peerOpen =  function(id) {
@@ -56,6 +56,20 @@
           ovideoElement.play();
         });
     }
+    var peerConnection = function(incoming_data){
+      console.log("Got a data  from user");
+      console.log(incoming_data);
+      // console.log(incoming_data);
+      // peers = peer.connections[0];
+      incoming_data.on('data',function(data){
+        videoData = data;
+      });
+      
+      incoming_data.on('error',function(err){
+          console.log(err);        
+      });
+    }
+                  
 
     var init = function(){
 		window.URL = window.URL || window.webkitURL || window.mozURL || window.msURL;
