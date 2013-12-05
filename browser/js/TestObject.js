@@ -12,10 +12,9 @@ TestObject.prototype.build = function(shaper){
 	this.mesh = new THREE.Mesh(geo, resMgr.materials.white);
 	
 	this.add(this.mesh);
-	this.distFromObject = 100;
+	this.distFromObject = 800;
 
 	this.maxCentroidDistance = 10;
-	// this.minPos = 
 	this.mass = 10;
 }
 
@@ -79,7 +78,7 @@ TestObject.prototype.getVertices = function(index, mousePoint){
 	targetVertices.push((vertices[face.b]));
 	targetVertices.push((vertices[face.c]));
 
-	var min 
+	// var min 
 	// for(var i =0; i<faces.length; i++){
 		
 	// 	var faceCentroid = faces[i].centroid;
@@ -94,16 +93,11 @@ TestObject.prototype.getVertices = function(index, mousePoint){
 	// } 
 	// console.log(targetVertices.length)	;
 	for(var i =0; i< targetVertices.length; i++){
-		var result = this.calculateRepulsionForce(targetVertices[i],mousePoint);
+
+		 var result = this.calculateRepulsionForce(targetVertices[i],mousePoint);
 		
 		if(result.length() !== 0){
 			targetVertices[i].add(result);
-			// targetVertices[i].negate();
-
-			
-			 // var min = new THREE.Vector3(0,targetVertices[i].y,100);
-			 // var max = new THREE.Vector3(80,targetVertices[i].y+10,150);
-			 // targetVertices[i].clamp(min,max);
 		}
 	}
 
@@ -113,6 +107,7 @@ TestObject.prototype.getVertices = function(index, mousePoint){
 
 TestObject.prototype.calculateRepulsionForce = function(vec1, vec2){
 	var diff = new THREE.Vector3();
+	
 	
 
 	diff.subVectors(vec1, vec2);

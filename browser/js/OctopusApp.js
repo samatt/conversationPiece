@@ -19,7 +19,7 @@ var exporter = null;
 
 var projector;
 
-var mousePos = new Object();
+
 //***************************************************************************//
 // initialize the renderer, scene, camera, and lights                        //
 //***************************************************************************//
@@ -143,7 +143,6 @@ function addGui()
     
     var f3 = gui.addFolder('CAMERA STUFF');
     f3.add(this,'radius',10,1000);
-    // f3.add(this,'speed',0.0001,0.01);
     f3.add(this,'speed',0.1,1.0);
 }
 
@@ -164,14 +163,14 @@ function run()
 
     if (animating)
     {
-     // /   sculpt(mousePos);  
+     // /   checkForIntersection(mousePos);  
     }
 
     // Ask for another frame
     requestAnimationFrame(run);
     controls.update();
 }
-    var radius = 300;
+    var radius = 100;
     var theta = 0;
     var speed = 0.05;
 // Render the scene
@@ -252,7 +251,7 @@ function onMouseDown(event)
     // mousePos.y = event.y; 
 }
 
-function sculpt(event){
+function checkForIntersection(event){
         // console.log(event.x + " , "+ event.y);
     var vector = new THREE.Vector3( ( event.x / window.innerWidth ) * 2 - 1, - ( event.y / window.innerHeight ) * 2 + 1, 0.5 );
     
@@ -263,14 +262,19 @@ function sculpt(event){
     var intersects = raycaster.intersectObject(object,true);
         
     if(intersects[0]!== undefined){
-        // console.log(intersects[0]);    
-        // console.log(raycaster.ray.origin);
-        object.getVertices(intersects[0].faceIndex,raycaster.ray.origin);
-        //object.extrudeFace(intersects[0].faceIndex)    
+        var data = {'faceIndex': intersects[0].faceIndex, 'mousePoint':raycaster.ray.origin}
+        socket.emit('othermouse',data);
+        sculpt(data);
+        
+     
     }
     else{
         console.log("Not intersecting")
     }
+}
+function sculpt(data){
+    console.log(data);
+    object.getVertices(data.faceIndex,data.mousePoint);
 }
 function onMouseUp(event)
 {
@@ -281,7 +285,7 @@ function onMouseMove(event)
 {
 
    event.preventDefault();
-   sculpt(event)
+   checkForIntersection(event)
 
 }
 
@@ -293,6 +297,7 @@ function onWindowResize()
 
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
+
 
 function getKeyCode(evt)
 {

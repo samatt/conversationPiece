@@ -35,6 +35,7 @@
 	          	mystream = stream;
 	          	console.log(mystream);
 	          	console.log('here');
+	          	onLoad();    
 	          	var videoElement = document.getElementById('myVideo');
 	          	videoElement.src = window.URL.createObjectURL(stream) || stream;
 	          	videoElement.play();
@@ -44,10 +45,18 @@
 	        	socket.on('connect', function() {
 		      		console.log("Connected");
 				});
-
+				
+				
+				
 				// Receive other folks peer_ids
 				socket.on('peer_id', newPeer );   
+				socket.on('othermouse',sculpt);
+				// socket.on('othermouse', function (data) {
+				// 	console.log(data);
 
+				// 	// odraw(data.x,data.y);
+				// 	object.getVertices(data.faceIndex,data.origin);
+				// });
 				/* Peer JS */
 				peer = new Peer({key: 'c9tm16hc72t0ggb9'});
 				// Get an ID from the PeerJS server   
@@ -59,18 +68,19 @@
         		console.log('Failed to get local stream' ,err);
         	});
 		}
-		onLoad();    
-    }
+		
 
+	
+    }
+    
 
   </script>
 </head>
 
 
 <body onload ="init()">
+<div id="container" style="padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"></div>
 <video id="myVideo" width="320" height="240"  ></video>
-<div id="container" style="padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;">
-    </div>
 <!-- <video id="otherVideo" width="320" height="240"  ></video> -->
 </body>
  
