@@ -90,6 +90,13 @@ io.sockets.on('connection',
             // Tell everyone my peer_id
             socket.broadcast.emit('peer_id',data);
         });
+
+        socket.on('othermouse',function(data){
+
+           console.log(data);
+           socket.broadcast.emit('othermouse',data);
+
+        });
         
         
         socket.on('disconnect', function() {
