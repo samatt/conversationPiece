@@ -78,20 +78,6 @@ TestObject.prototype.getVertices = function(index, mousePoint){
 	targetVertices.push((vertices[face.b]));
 	targetVertices.push((vertices[face.c]));
 
-	// var min 
-	// for(var i =0; i<faces.length; i++){
-		
-	// 	var faceCentroid = faces[i].centroid;
-
-	// 	var len = mousePoint.distanceTo(faceCentroid )	;
-	// 	if(len< this.maxCentroidDistance){
-			
-	// 		targetVertices.push((vertices[faces[i].a]));
-	// 		targetVertices.push((vertices[faces[i].b]));
-	// 		targetVertices.push((vertices[faces[i].c]));
-	// 	}
-	// } 
-	// console.log(targetVertices.length)	;
 	for(var i =0; i< targetVertices.length; i++){
 
 		 var result = this.calculateRepulsionForce(targetVertices[i],mousePoint);
@@ -107,8 +93,6 @@ TestObject.prototype.getVertices = function(index, mousePoint){
 
 TestObject.prototype.calculateRepulsionForce = function(vec1, vec2){
 	var diff = new THREE.Vector3();
-	
-	
 
 	diff.subVectors(vec1, vec2);
 	

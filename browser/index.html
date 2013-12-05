@@ -37,26 +37,22 @@
 	          	console.log('here');
 	          	onLoad();    
 	          	var videoElement = document.getElementById('myVideo');
-	          	videoElement.src = window.URL.createObjectURL(stream) || stream;
-	          	videoElement.play();
 
+	          	videoElement.src = window.URL.createObjectURL(stream) || stream;
+	          	newUser(videoElement);
+	          	videoElement.play();
+				
 				/* Socket Server - Socket.io */
 	        	socket = io.connect(serverAddress);  
 	        	socket.on('connect', function() {
 		      		console.log("Connected");
 				});
 				
-				
-				
+
 				// Receive other folks peer_ids
 				socket.on('peer_id', newPeer );   
 				socket.on('othermouse',sculpt);
-				// socket.on('othermouse', function (data) {
-				// 	console.log(data);
 
-				// 	// odraw(data.x,data.y);
-				// 	object.getVertices(data.faceIndex,data.origin);
-				// });
 				/* Peer JS */
 				peer = new Peer({key: 'c9tm16hc72t0ggb9'});
 				// Get an ID from the PeerJS server   

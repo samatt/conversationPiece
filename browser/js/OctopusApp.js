@@ -17,7 +17,8 @@ var keyPressed = [];
 
 var exporter = null;
 
-var projector;
+var videos=[];
+// var video =null;
 
 
 //***************************************************************************//
@@ -112,13 +113,39 @@ function populateScene()
     object.build(shaper);
     // object.setWidthHeight(200,200);
     
-    planeGeo = new THREE.PlaneGeometry(1000, 1000, 2, 2);
+    planeGeo = new THREE.PlaneGeometry(1000, 1000, 1, 1);
     planeMesh = new THREE.Mesh(planeGeo, resMgr.materials.basic);
     planeMesh.rotation.x = -Math.PI/2;
+
     planeMesh.position.y = -50;
 
     scene.add(planeMesh);
     scene.add(object);
+
+}
+function newUser(video){
+    userGeo = new THREE.PlaneGeometry(320, 240, 1, 1);
+     this.videoMaterial = new THREE.MeshLambertMaterial( {emissive: 0xffffff, map : this.videoTexture} );
+    var videoTexture = new THREE.Texture( video );
+    
+    var material   = new THREE.MeshLambertMaterial({
+        emissive: 0xffffff,
+      map : videoTexture
+    });    
+
+    userMesh = new THREE.Mesh(userGeo, material);
+    
+    var planeVertices = scene.children[7].geometry.vertices;
+    
+    userMesh.position.z = -500;
+    userMesh.position.y = 90;
+    // userMesh.rotation.z = -Math.PI/2;
+    // userMesh.rotation.y = -Math.PI/4;
+    
+    videos.push(videoTexture);
+    scene.add(userMesh);
+
+
 
 }
 
@@ -143,7 +170,8 @@ function addGui()
     
     var f3 = gui.addFolder('CAMERA STUFF');
     f3.add(this,'radius',10,1000);
-    f3.add(this,'speed',0.1,1.0);
+    // f3.add(this,'speed',0.1,1.0);
+    f3.add(this,'speed',0.001,0.01);
 }
 
 
@@ -167,8 +195,19 @@ function run()
     }
 
     // Ask for another frame
+    if(videos.length > 0){
+        for(var i = 0; i<videos.length; i++){
+            if( videos[i].readyState === videos[i].HAVE_ENOUGH_DATA ){
+                videos[i].needsUpdate = true;
+                console.log("here");
+            }    
+        }
+            
+    }
     requestAnimationFrame(run);
     controls.update();
+    
+    
 }
     var radius = 100;
     var theta = 0;
@@ -179,10 +218,10 @@ function render()
 
     theta += speed;
 
-    // object.rotation.y = radius * Math.sin( THREE.Math.degToRad( theta ) );
+    object.rotation.y = radius * Math.sin( THREE.Math.degToRad( theta ) );
     // object.rotation.x = radius *( Math.cos( THREE.Math.degToRad( theta )));
-    camera.position.z = radius *( Math.cos( THREE.Math.degToRad( theta )) );
-    camera.position.x = radius * Math.sin( THREE.Math.degToRad( theta ) );
+    // camera.position.z = radius *( Math.cos( THREE.Math.degToRad( theta )) );
+    // camera.position.x = radius * Math.sin( THREE.Math.degToRad( theta ) );
     camera.lookAt( scene.position );
     renderer.render(scene, camera);    
 }
@@ -272,6 +311,8 @@ function checkForIntersection(event){
         console.log("Not intersecting")
     }
 }
+
+
 function sculpt(data){
     console.log(data);
     object.getVertices(data.faceIndex,data.mousePoint);
