@@ -24,6 +24,7 @@
     var socket = null;
     
     var init = function(){
+    	
 		window.URL = window.URL || window.webkitURL || window.mozURL || window.msURL;
 	    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
@@ -58,7 +59,7 @@
         		console.log('Failed to get local stream' ,err);
         	});
 		}
-	    
+		onLoad();    
     }
 
 
@@ -68,6 +69,8 @@
 
 <body onload ="init()">
 <video id="myVideo" width="320" height="240"  ></video>
+<div id="container" style="padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;">
+    </div>
 <!-- <video id="otherVideo" width="320" height="240"  ></video> -->
 </body>
  
