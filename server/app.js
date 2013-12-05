@@ -18,19 +18,23 @@ function requestHandler(req, res) {
 
 console.log("Request for " + filepath+ " received.");
     fs.exists(filepath, function (f) {
-console.log(f);
+
         if (f) {
 
             fs.readFile(filepath, function (err, content) {
                 if (err) {
                     res.writeHead(HTTP_ERR_UNKNOWN);
+                    console.log('????');
                     res.end();
                 } else {
+
                     res.writeHead(HTTP_OK, contentType(fileext));
+                        console.log('seems ok');
                     res.end(content);
                 }
             });
         } else {
+            console.log('File not found');
             res.writeHead(HTTP_ERR_NOT_FOUND);
             res.end();
         }
