@@ -91,20 +91,59 @@ function initSceneLights()
     
     dirLight[1] = new THREE.DirectionalLight( 0xbbbbbb, 1);
     dirLight[1].position.set(-1, -1, 0);
-
+    // dirLight[1].shadowCameraVisible = true;
 
     scene.add( ambLight );
     scene.add( dirLight[0] );
     scene.add( dirLight[1] );
     // object spotlight
-    spotLight = new THREE.SpotLight(0xFFFFEE, 1);
+    spotLight = new THREE.SpotLight(0xCCCCCC, 0.1);
     spotLight.angle = Math.PI/2;
     spotLight.exponent = 1;
-    spotLight.position.set(800, 337, 0);
+    spotLight.position.set(600, 600, 600);
     // spotLight.target.position.set(-98, 82, 522);
     spotLight.target.position.set(0, 0, 0);
     spotLight.castShadow = true;
-    spotLight.shadowDarkness = 1;
+    spotLight.shadowDarkness = 0.2;
+    
+    spotLight.shadowCameraVisible = true;
+    // spotLight.shadowCameraFar = 100;
+    scene.add(spotLight);
+    
+
+    //
+    spotLight = new THREE.SpotLight(0xCCCCCC, 0.1);
+    spotLight.angle = Math.PI/2;
+    spotLight.exponent = 1;
+    //800 337
+    spotLight.position.set(-600, 600, -600);
+    spotLight.target.position.set(0, 0, 0);
+    spotLight.castShadow = true;
+    spotLight.shadowDarkness = 0.2;
+    
+    spotLight.shadowCameraVisible = true;
+    // spotLight.shadowCameraFar = 100;
+    scene.add(spotLight);
+
+    spotLight = new THREE.SpotLight(0xCCCCCC, 0.1);
+    spotLight.angle = Math.PI/2;
+    spotLight.exponent = 1;
+    spotLight.position.set(-600, 600, 600);
+    spotLight.target.position.set(0, 0, 0);
+    spotLight.castShadow = true;
+    spotLight.shadowDarkness = 0.2;
+    
+    spotLight.shadowCameraVisible = true;
+    // spotLight.shadowCameraFar = 100;
+    scene.add(spotLight);
+
+    spotLight = new THREE.SpotLight(0xCCCCCC, 0.1);
+    spotLight.angle = Math.PI/2;
+    spotLight.exponent = 1;
+    spotLight.position.set(600, 600, -600);
+    spotLight.target.position.set(0, 0, 0);
+    spotLight.castShadow = true;
+    spotLight.shadowDarkness = 0.2;
     
     spotLight.shadowCameraVisible = true;
     // spotLight.shadowCameraFar = 100;
@@ -144,7 +183,7 @@ function populateScene()
     room.init();
     scene.add(planeMesh);
     scene.add(object);
-    scene.add(room);
+    scene.add(room);    
 
 }
 function newUserLight(){
@@ -175,11 +214,11 @@ function newUser(video){
     userMesh = new THREE.Mesh(userGeo, material);
     
     
-    userMesh.position.x = 500;
+    userMesh.position.x = 490;
     userMesh.position.y = 90;
     // userMesh.rotation.z = -Math.PI/2;
     userMesh.rotation.y = -Math.PI/2;
-    // userMesh.castShadow = true;
+    userMesh.receiveShadow = false;
     newUserLight();
     videos.push(videoTexture);
     scene.add(userMesh);
@@ -202,7 +241,7 @@ function addGui()
 
 
     var f2 = gui.addFolder('FORCE PARAMS');
-    f2.add(object,"mass",10,1000);
+    f2.add(object,"mass",10,10000);
     f2.add(object,"distFromObject",10,1000);
     f2.add(object,'maxCentroidDistance',10,500);
     // f2.add(object,'multiplie',1,100);
@@ -210,7 +249,7 @@ function addGui()
     var f3 = gui.addFolder('CAMERA STUFF');
     f3.add(this,'radius',10,1000);
     // f3.add(this,'speed',0.1,1.0);
-    f3.add(this,'speed',0.001,0.01);
+    f3.add(this,'speed',0.01,0.1);
 }
 
 
@@ -250,7 +289,7 @@ function run()
 }
     var radius = 100;
     var theta = 0;
-    var speed = 0.05;
+    var speed = 0.5;
 // Render the scene
 function render()
 {

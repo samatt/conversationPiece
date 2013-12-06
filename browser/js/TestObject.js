@@ -13,6 +13,7 @@ TestObject.prototype.build = function(shaper){
 	
 	this.mesh.receiveShadow = false;
 	this.mesh.castShadow = true;
+	this.mesh.position.set(0, 15, 0);
 	this.add(this.mesh);
 		
 	this.distFromObject = 800;
