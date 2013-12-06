@@ -33,6 +33,8 @@ function onLoad()
     renderer = new THREE.WebGLRenderer( { antialias: true } );
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setClearColor(0);
+    renderer.shadowMapEnabled = true;
+    renderer.shadowMapSoft = true;
     container.appendChild( renderer.domElement );
     projector = new THREE.Projector();
     // Create a new Three.js scene
@@ -61,9 +63,11 @@ function onLoad()
     addGui();
 
     clock = new THREE.Clock();
-
+    // scene.castShadow = true;
+    // scene.receiveShadow = true;
     // Run our render loop
 	run();
+    console.log(scene);
 }
 
 //***************************************************************************//
@@ -71,31 +75,43 @@ function onLoad()
 //***************************************************************************//
 function initSceneLights()
 {
-    // Create an ambient and a directional light to show off the object
+      // Create an ambient and a directional light to show off the object
+    // var dirLight = [];
+    // var ambLight = new THREE.AmbientLight( 0xFFFFFF ); // soft white light
+    // scene.add( ambLight );
+
     var dirLight = [];
     var ambLight = new THREE.AmbientLight( 0xaaaaaa ); // soft white light
+    ambLight.shadowCameraVisible = true;
+    // 
     dirLight[0] = new THREE.DirectionalLight( 0xffffff, 1);
-    dirLight[0].position.set(0, 1, 1);
+    dirLight[0].shadowCameraVisible = true;
+
+    dirLight[0].position.set(1, 1, 0);
+    
     dirLight[1] = new THREE.DirectionalLight( 0xbbbbbb, 1);
-    // dirLight[1].position.set(0, -1, -1);
+    dirLight[1].position.set(-1, -1, 0);
 
-    var spotLight = new THREE.SpotLight( 0xaabbcc );
-    spotLight.position.set( 100, 100, 100 );
-
-    spotLight.castShadow = true;
-
-    spotLight.shadowMapWidth = 1024;
-    spotLight.shadowMapHeight = 1024;
-
-    spotLight.shadowCameraNear = 500;
-    spotLight.shadowCameraFar = 4000;
-    spotLight.shadowCameraFov = 30;
-
-    scene.add( spotLight );
 
     scene.add( ambLight );
     scene.add( dirLight[0] );
     scene.add( dirLight[1] );
+    // object spotlight
+    spotLight = new THREE.SpotLight(0xFFFFEE, 1);
+    spotLight.angle = Math.PI/2;
+    spotLight.exponent = 1;
+    spotLight.position.set(800, 337, 0);
+    // spotLight.target.position.set(-98, 82, 522);
+    spotLight.target.position.set(0, 0, 0);
+    spotLight.castShadow = true;
+    spotLight.shadowDarkness = 1;
+    
+    spotLight.shadowCameraVisible = true;
+    // spotLight.shadowCameraFar = 100;
+    scene.add(spotLight);
+
+    // // Create an ambient and a directional light to show off the object
+
 }
 
 //***************************************************************************//
@@ -109,20 +125,43 @@ function populateScene()
     resMgr.initMaterials();
     object = new TestObject();
     shaper = new Shaper();
+    room = new Room();
     console.log(shaper);
     object.build(shaper);
-    // object.setWidthHeight(200,200);
+    // object.setWidthHeight(200,00);
     
     planeGeo = new THREE.PlaneGeometry(1000, 1000, 1, 1);
-    planeMesh = new THREE.Mesh(planeGeo, resMgr.materials.basic);
+    
+    planeMesh = new THREE.Mesh(planeGeo, resMgr.materials.white);
+    planeMesh.receiveShadow = true;
+    
+    // object.castShadow = true;
     planeMesh.rotation.x = -Math.PI/2;
 
     planeMesh.position.y = -50;
+    planeMesh.receiveShadow = true;
 
+    room.init();
     scene.add(planeMesh);
     scene.add(object);
+    scene.add(room);
 
 }
+function newUserLight(){
+    screenLight = new THREE.SpotLight(0xFFFFEE, 3.5);
+    screenLight.angle = Math.PI/2;
+    screenLight.exponent = 1;
+    screenLight.position.set(800, 337, 0);
+    // spotLight.target.position.set(-98, 82, 522);
+    screenLight.target.position.set(0, 0, 0);
+    screenLight.castShadow = true;
+    screenLight.shadowDarkness = 1;
+    
+    screenLight.shadowCameraVisible = true;
+    // spotLight.shadowCameraFar = 100;
+    scene.add(screenLight);
+}
+
 function newUser(video){
     userGeo = new THREE.PlaneGeometry(320, 240, 1, 1);
      this.videoMaterial = new THREE.MeshLambertMaterial( {emissive: 0xffffff, map : this.videoTexture} );
@@ -135,16 +174,16 @@ function newUser(video){
 
     userMesh = new THREE.Mesh(userGeo, material);
     
-    var planeVertices = scene.children[7].geometry.vertices;
     
-    userMesh.position.z = -500;
+    userMesh.position.x = 500;
     userMesh.position.y = 90;
     // userMesh.rotation.z = -Math.PI/2;
-    // userMesh.rotation.y = -Math.PI/4;
-    
+    userMesh.rotation.y = -Math.PI/2;
+    // userMesh.castShadow = true;
+    newUserLight();
     videos.push(videoTexture);
     scene.add(userMesh);
-
+    
 
 
 }
@@ -199,7 +238,7 @@ function run()
         for(var i = 0; i<videos.length; i++){
             if( videos[i].readyState === videos[i].HAVE_ENOUGH_DATA ){
                 videos[i].needsUpdate = true;
-                console.log("here");
+            
             }    
         }
             
@@ -244,14 +283,16 @@ function onKeyDown(evt)
     var keyCode = getKeyCode(evt);
     keyPressed[keyCode] = true;
 
-    console.log(keyCode);
+    // console.log(keyCode);
 
     if (keyCode == 32) {
         animating = !animating;        
     }
     else if (keyCode == 83) // 's'
     {
-        object.extrudeFace();
+        console.log(camera.position);
+        console.log(controls.target);
+        // object.extrudeFace();
         if (!keyPressed[keyCode]) {
             keyPressed[keyCode] = true;
         }
@@ -308,7 +349,7 @@ function checkForIntersection(event){
      
     }
     else{
-        console.log("Not intersecting")
+        // console.log("Not intersecting")
     }
 }
 

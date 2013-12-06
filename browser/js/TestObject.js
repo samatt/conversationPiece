@@ -9,11 +9,13 @@ TestObject.prototype = Object.create(THREE.Object3D.prototype);
 TestObject.prototype.build = function(shaper){
 	this.shaper = shaper;
 	var geo = new THREE.CylinderGeometry( this.shaper.radiusTop, this.shaper.radiusBottom, this.shaper.height, this.shaper.segmentsRadius, this.shaper.segmentsHeight);
-	this.mesh = new THREE.Mesh(geo, resMgr.materials.white);
+	this.mesh = new THREE.Mesh(geo, resMgr.materials.object);
 	
+	this.mesh.receiveShadow = false;
+	this.mesh.castShadow = true;
 	this.add(this.mesh);
+		
 	this.distFromObject = 800;
-
 	this.maxCentroidDistance = 10;
 	this.mass = 10;
 }
@@ -53,10 +55,15 @@ TestObject.prototype.extrudeFace = function()
 	var v3 = vertices[faces[i].c];
 	
 
-		v1.y += 1;
-		v1.y += 1;
-		v2.y += 1;
-		v3.y += 1;		
+		v1.x += 1;
+		v1.x += 1;
+		v2.x += 1;
+		v3.x += 1;		
+
+		v1.z += 1;
+		v1.z += 1;
+		v2.z += 1;
+		v3.z += 1;		
 	}
 
 
