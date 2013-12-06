@@ -18,7 +18,7 @@ TestObject.prototype.build = function(shaper){
 		
 	this.distFromObject = 800;
 	this.maxCentroidDistance = 10;
-	this.mass = 10;
+	this.mass = 100;
 }
 
 TestObject.prototype.updatedShaper = function(shaper){
@@ -101,13 +101,21 @@ TestObject.prototype.getVertices = function(index, mousePoint){
 
 TestObject.prototype.calculateRepulsionForce = function(vec1, vec2){
 	var diff = new THREE.Vector3();
-
-	diff.subVectors(vec1, vec2);
+	var v1 = new THREE.Vector3();
+	v1.x = vec1.x;
+	v1.y = 0;
+	v1.z = vec1.z;
+	
+	var v2 = new THREE.Vector2();
+	v2.x = vec2.x;
+	v2.y = 0;
+	v2.z = vec2.z;
+	diff.subVectors(v1, v2);
 	
 	var d = diff.length();
 
 	var power = this.mass/(d*d);
-	console.log(power)
+	// console.log(power)
 	diff.normalize();
 	diff.multiplyScalar( power);
 	// console.log(this.distFromObject);	

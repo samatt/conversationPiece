@@ -241,7 +241,7 @@ function addGui()
 
 
     var f2 = gui.addFolder('FORCE PARAMS');
-    f2.add(object,"mass",10,10000);
+    f2.add(object,"mass",10,5000);
     f2.add(object,"distFromObject",10,1000);
     f2.add(object,'maxCentroidDistance',10,500);
     // f2.add(object,'multiplie',1,100);
