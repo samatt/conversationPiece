@@ -177,7 +177,8 @@ function newUser(video, pos,index ){
 function removeUser(index){
     //console.log("removing user  : "+index );
     //scene.removeObject(users[index]);
-    users[index].remove();
+    // users[index].remove();
+    scene.remove(users[index]);
 }
 
 function addGui()
@@ -231,15 +232,11 @@ function run()
         for(var i = 0; i<users.length; i++){
             if( users[i].videoTexture.readyState === users[i].videoTexture.HAVE_ENOUGH_DATA ){
                 users[i].videoTexture.needsUpdate = true;
-            
             }    
         }
-            
     }
     requestAnimationFrame(run);
     controls.update();
-    
-    
 }
     var radius = 100;
     var theta = 0;
@@ -292,7 +289,7 @@ function onKeyDown(evt)
     }
     else if (keyCode == 66) // 'b'
     {
-        console.log(scene);
+        removeUser(1);
         if (!keyPressed[keyCode]) {
             keyPressed[keyCode] = true;
         }
