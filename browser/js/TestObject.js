@@ -10,7 +10,7 @@ TestObject.prototype.build = function(shaper){
 	this.shaper = shaper;
 	var geo = new THREE.CylinderGeometry( this.shaper.radiusTop, this.shaper.radiusBottom, this.shaper.height, this.shaper.segmentsRadius, this.shaper.segmentsHeight);
 	this.mesh = new THREE.Mesh(geo, resMgr.materials.object);
-	
+	// this.verticesCopy  = this.mesh. 
 	this.mesh.receiveShadow = false;
 	this.mesh.castShadow = true;
 	this.mesh.position.set(0, 15, 0);
@@ -91,7 +91,10 @@ TestObject.prototype.getVertices = function(index, mousePoint){
 		 var result = this.calculateRepulsionForce(targetVertices[i],mousePoint);
 		
 		if(result.length() !== 0){
-			targetVertices[i].add(result);
+
+			if(targetVertices[i].x )
+			targetVertices[i].x -= result.x;
+			targetVertices[i].z -= result.y;//add(result);
 		}
 	}
 
@@ -100,16 +103,16 @@ TestObject.prototype.getVertices = function(index, mousePoint){
 }
 
 TestObject.prototype.calculateRepulsionForce = function(vec1, vec2){
-	var diff = new THREE.Vector3();
-	var v1 = new THREE.Vector3();
+	var diff = new THREE.Vector2();
+	var v1 = new THREE.Vector2();
 	v1.x = vec1.x;
-	v1.y = 0;
-	v1.z = vec1.z;
+	v1.y = vec1.y;
+	// v1.z = vec1.y;
 	
 	var v2 = new THREE.Vector2();
 	v2.x = vec2.x;
-	v2.y = 0;
-	v2.z = vec2.z;
+	v2.y = vec2.y;
+	// v2.z = vec2.y;
 	diff.subVectors(v1, v2);
 	
 	var d = diff.length();
@@ -117,7 +120,7 @@ TestObject.prototype.calculateRepulsionForce = function(vec1, vec2){
 	var power = this.mass/(d*d);
 	// console.log(power)
 	diff.normalize();
-	diff.multiplyScalar( power);
+	diff.multiplyScalar( -power);
 	// console.log(this.distFromObject);	
 	
 	if(d > this.distFromObject){

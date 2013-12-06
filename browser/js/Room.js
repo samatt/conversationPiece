@@ -13,7 +13,7 @@ Room.prototype.init = function()
         mesh.position.x = 500;
         mesh.position.y = 250;
         mesh.rotation.y = -Math.PI/2;
-        mesh.receiveShadow = false;
+        mesh.receiveShadow = true;
         mesh.castShadow = false;
         this.add(mesh);
 
@@ -22,7 +22,7 @@ Room.prototype.init = function()
         mesh = new THREE.Mesh(geo, resMgr.materials.walls);
         mesh.position.x = -500;
         mesh.position.y = 250;
-        mesh.receiveShadow = false;
+        mesh.receiveShadow = true;
         mesh.castShadow = false;
         mesh.rotation.y = Math.PI/2;
         this.add(mesh);
@@ -34,14 +34,14 @@ Room.prototype.init = function()
         mesh.castShadow = false      ;
         mesh.position.z = -500;
         mesh.position.y = 250;
-        mesh.receiveShadow = false;
+        mesh.receiveShadow = true;
         mesh.castShadow = false;
         this.add(mesh);
 
         // left wall
         geo = new THREE.PlaneGeometry( 1000, 600, 150, 150);
         mesh = new THREE.Mesh(geo, resMgr.materials.walls);
-        mesh.receiveShadow = false      ;
+        mesh.receiveShadow = true      ;
         mesh.castShadow = false      ;
         mesh.position.z = 500;
         mesh.position.y = 250;

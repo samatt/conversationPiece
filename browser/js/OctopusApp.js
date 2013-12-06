@@ -20,6 +20,9 @@ var exporter = null;
 var videos=[];
 // var video =null;
 
+var users = [];
+
+
 
 //***************************************************************************//
 // initialize the renderer, scene, camera, and lights                        //
@@ -63,8 +66,7 @@ function onLoad()
     addGui();
 
     clock = new THREE.Clock();
-    // scene.castShadow = true;
-    // scene.receiveShadow = true;
+    
     // Run our render loop
 	run();
     console.log(scene);
@@ -75,81 +77,53 @@ function onLoad()
 //***************************************************************************//
 function initSceneLights()
 {
-      // Create an ambient and a directional light to show off the object
-    // var dirLight = [];
-    // var ambLight = new THREE.AmbientLight( 0xFFFFFF ); // soft white light
-    // scene.add( ambLight );
-
-    var dirLight = [];
     var ambLight = new THREE.AmbientLight( 0xaaaaaa ); // soft white light
-    ambLight.shadowCameraVisible = true;
-    // 
-    dirLight[0] = new THREE.DirectionalLight( 0xffffff, 1);
-    dirLight[0].shadowCameraVisible = true;
-
-    dirLight[0].position.set(1, 1, 0);
-    
-    dirLight[1] = new THREE.DirectionalLight( 0xbbbbbb, 1);
-    dirLight[1].position.set(-1, -1, 0);
-    // dirLight[1].shadowCameraVisible = true;
-
     scene.add( ambLight );
-    scene.add( dirLight[0] );
-    scene.add( dirLight[1] );
-    // object spotlight
-    spotLight = new THREE.SpotLight(0xCCCCCC, 0.1);
+
+    //Top Right
+    spotLight = new THREE.SpotLight(0xFFFFFC, 0.4);
     spotLight.angle = Math.PI/2;
     spotLight.exponent = 1;
     spotLight.position.set(600, 600, 600);
-    // spotLight.target.position.set(-98, 82, 522);
     spotLight.target.position.set(0, 0, 0);
     spotLight.castShadow = true;
     spotLight.shadowDarkness = 0.2;
-    
-    spotLight.shadowCameraVisible = true;
-    // spotLight.shadowCameraFar = 100;
+    // spotLight.shadowCameraVisible = true;
     scene.add(spotLight);
     
 
-    //
-    spotLight = new THREE.SpotLight(0xCCCCCC, 0.1);
+    //Bottom Left
+    spotLight = new THREE.SpotLight(0xCCCCCC, 0.4);
     spotLight.angle = Math.PI/2;
     spotLight.exponent = 1;
-    //800 337
     spotLight.position.set(-600, 600, -600);
     spotLight.target.position.set(0, 0, 0);
     spotLight.castShadow = true;
     spotLight.shadowDarkness = 0.2;
-    
-    spotLight.shadowCameraVisible = true;
-    // spotLight.shadowCameraFar = 100;
+    // spotLight.shadowCameraVisible = true;
     scene.add(spotLight);
 
-    spotLight = new THREE.SpotLight(0xCCCCCC, 0.1);
+    //Top Left
+    spotLight = new THREE.SpotLight(0xCCCCCC, 0.4);
     spotLight.angle = Math.PI/2;
     spotLight.exponent = 1;
     spotLight.position.set(-600, 600, 600);
     spotLight.target.position.set(0, 0, 0);
     spotLight.castShadow = true;
     spotLight.shadowDarkness = 0.2;
-    
-    spotLight.shadowCameraVisible = true;
-    // spotLight.shadowCameraFar = 100;
+    // spotLight.shadowCameraVisible = true;
     scene.add(spotLight);
 
-    spotLight = new THREE.SpotLight(0xCCCCCC, 0.1);
+    //Bottom Right
+    spotLight = new THREE.SpotLight(0xCCCCCC, 0.4);
     spotLight.angle = Math.PI/2;
     spotLight.exponent = 1;
     spotLight.position.set(600, 600, -600);
     spotLight.target.position.set(0, 0, 0);
     spotLight.castShadow = true;
     spotLight.shadowDarkness = 0.2;
-    
-    spotLight.shadowCameraVisible = true;
-    // spotLight.shadowCameraFar = 100;
+    // spotLight.shadowCameraVisible = true;
     scene.add(spotLight);
-
-    // // Create an ambient and a directional light to show off the object
 
 }
 
@@ -186,45 +160,24 @@ function populateScene()
     scene.add(room);    
 
 }
-function newUserLight(){
-    screenLight = new THREE.SpotLight(0xFFFFEE, 3.5);
-    screenLight.angle = Math.PI/2;
-    screenLight.exponent = 1;
-    screenLight.position.set(800, 337, 0);
-    // spotLight.target.position.set(-98, 82, 522);
-    screenLight.target.position.set(0, 0, 0);
-    screenLight.castShadow = true;
-    screenLight.shadowDarkness = 1;
-    
-    screenLight.shadowCameraVisible = true;
-    // spotLight.shadowCameraFar = 100;
-    scene.add(screenLight);
+
+function newUser(video, pos,index ){
+
+
+    var user = new User();        
+    user.build(video,pos,index);
+
+    scene.add(user);
+    users.push(user);
+
+    // material.needsUpdate = true;
+
 }
 
-function newUser(video){
-    userGeo = new THREE.PlaneGeometry(320, 240, 1, 1);
-     this.videoMaterial = new THREE.MeshLambertMaterial( {emissive: 0xffffff, map : this.videoTexture} );
-    var videoTexture = new THREE.Texture( video );
-    
-    var material   = new THREE.MeshLambertMaterial({
-        emissive: 0xffffff,
-      map : videoTexture
-    });    
-
-    userMesh = new THREE.Mesh(userGeo, material);
-    
-    
-    userMesh.position.x = 490;
-    userMesh.position.y = 90;
-    // userMesh.rotation.z = -Math.PI/2;
-    userMesh.rotation.y = -Math.PI/2;
-    userMesh.receiveShadow = false;
-    newUserLight();
-    videos.push(videoTexture);
-    scene.add(userMesh);
-    
-
-
+function removeUser(index){
+    //console.log("removing user  : "+index );
+    //scene.removeObject(users[index]);
+    users[index].remove();
 }
 
 function addGui()
@@ -273,10 +226,11 @@ function run()
     }
 
     // Ask for another frame
-    if(videos.length > 0){
-        for(var i = 0; i<videos.length; i++){
-            if( videos[i].readyState === videos[i].HAVE_ENOUGH_DATA ){
-                videos[i].needsUpdate = true;
+    if(users.length > 0){
+        console.log("here");
+        for(var i = 0; i<users.length; i++){
+            if( users[i].videoTexture.readyState === users[i].videoTexture.HAVE_ENOUGH_DATA ){
+                users[i].videoTexture.needsUpdate = true;
             
             }    
         }
@@ -338,9 +292,9 @@ function onKeyDown(evt)
     }
     else if (keyCode == 66) // 'b'
     {
+        console.log(scene);
         if (!keyPressed[keyCode]) {
             keyPressed[keyCode] = true;
-            octopus.shutEyes(0.2);
         }
     }
     else if (keyCode == 69) // 'e'

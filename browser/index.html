@@ -11,6 +11,7 @@
 	<script src="js/TestObject.js"></script>
 	<script src="js/Shaper.js"></script> 
 	<script src="js/Room.js"></script> 
+	<script src="js/User.js"></script> 
 	<script src="http://cdn.peerjs.com/0.3/peer.min.js"></script>
 	<script src="socket.io/socket.io.js"> </script>
 	<script type="text/javascript" src="js/peerStuff.js"></script>
@@ -23,6 +24,7 @@
     var peer_id = null;
     var peer = null;
     var socket = null;
+    var call  = null;
     
     var init = function(){
     	
@@ -40,7 +42,7 @@
 	          	var videoElement = document.getElementById('myVideo');
 
 	          	videoElement.src = window.URL.createObjectURL(stream) || stream;
-	          	newUser(videoElement);
+	          	newUser(videoElement,screenPos[0],0);
 	          	videoElement.play();
 				
 				/* Socket Server - Socket.io */
@@ -59,7 +61,9 @@
 				// Get an ID from the PeerJS server   
 				peer.on('open',peerOpen);           
 				peer.on('call',peerIncomingCall);
-				peer.on('connection', peerConnection);                 
+				peer.on('connection', peerConnection);
+				peer.on('close', peerClose);
+				// peer.on('connection', peerConnection);                 
 
 	    	}, function(err) {
         		console.log('Failed to get local stream' ,err);
@@ -69,13 +73,17 @@
 
 	
     }
+
+    var uninit = function(){
+			peer.destroy();	
+    }
     
 
   </script>
 </head>
 
 
-<body onload ="init()">
+<body onload ="init()" unload  = "uninit()">
 <div id="container" style="padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"></div>
 <video id="myVideo" width="320" height="240" hidden = "true"  ></video>
 <!-- <video id="otherVideo" width="320" height="240"  ></video> -->

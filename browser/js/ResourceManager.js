@@ -13,8 +13,8 @@ ResourceManager.prototype.initMaterials = function()
         this.materials.floor = new THREE.MeshLambertMaterial( { color: 0xC6B263, ambient: 0xC6B263 } );
         this.materials.walls = new THREE.MeshLambertMaterial( { color: 0xddd8d8, ambient: 0xddd8d8 } );
 
-        // this.materials.object = new THREE.MeshPhongMaterial( { ambient: 0x030303, specular: 0xc0c0c0, shininess: 25 } );
-        this.materials.object = new THREE.MeshLambertMaterial( { ambient: 0x050505, specular: 0xc0c0c0, shading: THREE.SmoothShading } );
+        this.materials.object = new THREE.MeshPhongMaterial( { ambient: 0x030303, specular: 0xc0c0c0, shininess: 25 } );
+        // this.materials.object = new THREE.MeshLambertMaterial( { ambient: 0x050505, specular: 0xc0c0c0, shading: THREE.SmoothShading } );
         // this.materials.object.shading = THREE.FlatShading;
 	this.materials.colors = [];
 	for (var i=0; i<16; i++)

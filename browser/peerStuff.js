@@ -1,4 +1,4 @@
-  /* PeerJS functions*/
+/* PeerJS functions*/
     var newPeer = function(peer_ids){
 
       console.log("Got a new peer: " + peer_ids);
@@ -15,15 +15,18 @@
         console.log("Got remote stream ");
         var ovideoElement = document.createElement('video');
             ovideoElement.src = window.URL.createObjectURL(remoteStream) || remoteStream;
-            document.body.appendChild(ovideoElement);
             ovideoElement.width = 320;
             ovideoElement.height = 240;
-            newUser(ovideoElement,screenPos[1],1);
+            // ovideoElement.setAttribute("width", 320);
+            // ovideoElement.setAttribute("height", 240);
+            document.body.appendChild(ovideoElement);
+            newUser(videoElement,screenPos[1],1);
             ovideoElement.play();
-        // var videoElement = document.getElementById('otherVideo');
-  
-        // videoElement.src = window.URL.createObjectURL(remoteStream) || remoteStream;
       });
+
+      call.on('close',peerClose);
+
+
     }  
     var peerOpen =  function(id) {
         console.log('My peer ID is: ' + id);
@@ -32,6 +35,11 @@
         console.log("sending out our peer id");
         socket.emit("peer_id",peer_id);        
 	  }
+
+    var peerClose = function(){
+      console.log("Closing peer connection");
+      removeUser(1);
+    }
   	var peerIncomingCall =  function(incoming_call) {
         console.log("Got a call!");
         console.log("sending" + mystream);
@@ -41,19 +49,13 @@
           // And attach it to a video object
           var ovideoElement = document.createElement('video');
             ovideoElement.src = window.URL.createObjectURL(remoteStream) || remoteStream;
-            document.body.appendChild(ovideoElement);
             ovideoElement.width = 320;
             ovideoElement.height = 240;
-            newUser(ovideoElement,screenPos[1],1);
+            document.body.appendChild(ovideoElement);
+            newUser(videoElement,screenPos[1],1);
             ovideoElement.play();
         });
     }
-    
-    var peerClose = function(){
-      console.log("Closing peer connection");
-      removeUser(1);
-    }
-
     var peerConnection = function(incoming_data){
       console.log("Got a data  from user");
       console.log(incoming_data);
