@@ -2,7 +2,7 @@ User = function(){
 	THREE.Object3D.call(this);
 
 }
-screenPos = [{ 'x': 490, 'y': 90},{'x': -490,'y': 90}];
+screenPos = [{ 'x': 490, 'y': 220},{'x': -490,'y': 220}];
 
 User.prototype = Object.create(THREE.Object3D.prototype);
 

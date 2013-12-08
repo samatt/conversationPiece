@@ -17,6 +17,7 @@
             ovideoElement.src = window.URL.createObjectURL(remoteStream) || remoteStream;
             ovideoElement.width = 320;
             ovideoElement.height = 240;
+            ovideoElement.hidden = true;
             // ovideoElement.setAttribute("width", 320);
             // ovideoElement.setAttribute("height", 240);
             document.body.appendChild(ovideoElement);
@@ -51,7 +52,9 @@
             ovideoElement.src = window.URL.createObjectURL(remoteStream) || remoteStream;
             ovideoElement.width = 320;
             ovideoElement.height = 240;
+            ovideoElement.hidden = true;
             document.body.appendChild(ovideoElement);
+
             newUser(videoElement,screenPos[1],1);
             ovideoElement.play();
         });

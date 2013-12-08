@@ -77,14 +77,18 @@ function onLoad()
 //***************************************************************************//
 function initSceneLights()
 {
-    var ambLight = new THREE.AmbientLight( 0xaaaaaa ); // soft white light
-    scene.add( ambLight );
+    // var ambLight = new THREE.AmbientLight( 0x222222 ); // soft white light
+    // scene.add( ambLight );
+    
+    var pointLight = new THREE.PointLight( 0xaaaaaa,0.6 );
+    pointLight.position.set(0, 400, 0);
 
+    scene.add( pointLight );
     //Top Right
-    spotLight = new THREE.SpotLight(0xFFFFFC, 0.4);
+    spotLight = new THREE.SpotLight(0xFFFFFC, 0.6);
     spotLight.angle = Math.PI/2;
-    spotLight.exponent = 1;
-    spotLight.position.set(600, 600, 600);
+    spotLight.exponent = 0.5;
+    spotLight.position.set(200, 200, 200);
     spotLight.target.position.set(0, 0, 0);
     spotLight.castShadow = true;
     spotLight.shadowDarkness = 0.2;
@@ -92,33 +96,11 @@ function initSceneLights()
     scene.add(spotLight);
     
 
-    //Bottom Left
-    spotLight = new THREE.SpotLight(0xCCCCCC, 0.4);
+    // //Bottom Left
+    spotLight = new THREE.SpotLight(0xFFFFFC, 0.4);
     spotLight.angle = Math.PI/2;
     spotLight.exponent = 1;
-    spotLight.position.set(-600, 600, -600);
-    spotLight.target.position.set(0, 0, 0);
-    spotLight.castShadow = true;
-    spotLight.shadowDarkness = 0.2;
-    // spotLight.shadowCameraVisible = true;
-    scene.add(spotLight);
-
-    //Top Left
-    spotLight = new THREE.SpotLight(0xCCCCCC, 0.4);
-    spotLight.angle = Math.PI/2;
-    spotLight.exponent = 1;
-    spotLight.position.set(-600, 600, 600);
-    spotLight.target.position.set(0, 0, 0);
-    spotLight.castShadow = true;
-    spotLight.shadowDarkness = 0.2;
-    // spotLight.shadowCameraVisible = true;
-    scene.add(spotLight);
-
-    //Bottom Right
-    spotLight = new THREE.SpotLight(0xCCCCCC, 0.4);
-    spotLight.angle = Math.PI/2;
-    spotLight.exponent = 1;
-    spotLight.position.set(600, 600, -600);
+    spotLight.position.set(-200, 200, -200);
     spotLight.target.position.set(0, 0, 0);
     spotLight.castShadow = true;
     spotLight.shadowDarkness = 0.2;
@@ -142,20 +124,9 @@ function populateScene()
     console.log(shaper);
     object.build(shaper);
     // object.setWidthHeight(200,00);
-    
-    planeGeo = new THREE.PlaneGeometry(1000, 1000, 1, 1);
-    
-    planeMesh = new THREE.Mesh(planeGeo, resMgr.materials.white);
-    planeMesh.receiveShadow = true;
-    
-    // object.castShadow = true;
-    planeMesh.rotation.x = -Math.PI/2;
 
-    planeMesh.position.y = -50;
-    planeMesh.receiveShadow = true;
 
     room.init();
-    scene.add(planeMesh);
     scene.add(object);
     scene.add(room);    
 
@@ -175,23 +146,15 @@ function newUser(video, pos,index ){
 }
 
 function removeUser(index){
-    //console.log("removing user  : "+index );
-    //scene.removeObject(users[index]);
-    // users[index].remove();
+
     scene.remove(users[index]);
+    users.pop();
 }
 
 function addGui()
 {
 
     var gui = new dat.GUI();
-  
-    var f1 = gui.addFolder('OBJECT GEOMETERY');
-    f1.add(shaper ,'radiusTop', 5, 35).onChange(onGeometryChanged);
-    f1.add(shaper ,'radiusBottom', 5, 35).onChange(onGeometryChanged);
-    f1.add(shaper ,'height', 10, 300).onChange(onGeometryChanged);
-    f1.add(shaper ,'segmentsRadius', 8, 100).onChange(onGeometryChanged);
-    f1.add(shaper ,'segmentsHeight', 10, 300).onChange(onGeometryChanged);
 
 
     var f2 = gui.addFolder('FORCE PARAMS');
@@ -204,6 +167,12 @@ function addGui()
     f3.add(this,'radius',10,1000);
     // f3.add(this,'speed',0.1,1.0);
     f3.add(this,'speed',0.01,0.1);
+
+    var f3 = gui.addFolder('SYNC');
+    f3.add(this,'radius',10,1000);
+    // f3.add(this,'speed',0.1,1.0);
+    
+
 }
 
 
@@ -240,14 +209,14 @@ function run()
 }
     var radius = 100;
     var theta = 0;
-    var speed = 0.5;
+    var speed = 0.05;
 // Render the scene
 function render()
 {
 
     theta += speed;
 
-    object.rotation.y = radius * Math.sin( THREE.Math.degToRad( theta ) );
+    object.rotation.y += 0.01;// radius * Math.sin( THREE.Math.degToRad( theta ) );
     // object.rotation.x = radius *( Math.cos( THREE.Math.degToRad( theta )));
     // camera.position.z = radius *( Math.cos( THREE.Math.degToRad( theta )) );
     // camera.position.x = radius * Math.sin( THREE.Math.degToRad( theta ) );
@@ -289,7 +258,7 @@ function onKeyDown(evt)
     }
     else if (keyCode == 66) // 'b'
     {
-        removeUser(1);
+        removeUser(users.length -1 );
         if (!keyPressed[keyCode]) {
             keyPressed[keyCode] = true;
         }

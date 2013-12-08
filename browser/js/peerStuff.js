@@ -18,12 +18,15 @@
             document.body.appendChild(ovideoElement);
             ovideoElement.width = 320;
             ovideoElement.height = 240;
+            ovideoElement.hidden = true;
             newUser(ovideoElement,screenPos[1],1);
             ovideoElement.play();
         // var videoElement = document.getElementById('otherVideo');
   
         // videoElement.src = window.URL.createObjectURL(remoteStream) || remoteStream;
       });
+
+      call.on('close',peerClose);
     }  
     var peerOpen =  function(id) {
         console.log('My peer ID is: ' + id);
@@ -44,6 +47,7 @@
             document.body.appendChild(ovideoElement);
             ovideoElement.width = 320;
             ovideoElement.height = 240;
+            ovideoElement.hidden = true;
             newUser(ovideoElement,screenPos[1],1);
             ovideoElement.play();
         });

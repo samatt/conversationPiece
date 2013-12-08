@@ -54,6 +54,10 @@ function contentType(ext) {
     case '.js':
         ct = 'text/javascript';
         break;
+    case '.jpg':
+        ct = 'image/jpeg';   
+    case '.png':
+        ct = 'image/png';           
     default:
         ct = 'text/plain';
         break;
@@ -95,6 +99,13 @@ io.sockets.on('connection',
 
            console.log(data);
            socket.broadcast.emit('othermouse',data);
+
+        });
+
+        socket.on('params',function(data){
+
+           console.log(data);
+           socket.broadcast.emit('params',data);
 
         });
         

@@ -8,17 +8,20 @@ TestObject.prototype = Object.create(THREE.Object3D.prototype);
 
 TestObject.prototype.build = function(shaper){
 	this.shaper = shaper;
-	var geo = new THREE.CylinderGeometry( this.shaper.radiusTop, this.shaper.radiusBottom, this.shaper.height, this.shaper.segmentsRadius, this.shaper.segmentsHeight);
-	this.mesh = new THREE.Mesh(geo, resMgr.materials.object);
-	// this.verticesCopy  = this.mesh. 
+	var geo = new THREE.CylinderGeometry( this.shaper.radiusTop, this.shaper.radiusBottom, this.shaper.height, this.shaper.segmentsRadius, this.shaper.segmentsHeight,true);
+	 geo.computeTangents();
+	 geo.dynaminc = true;
+	this.mesh = new THREE.Mesh(geo, resMgr.materials.displacement);
+	this.mesh.position.set(0, 25, 0);
+
 	this.mesh.receiveShadow = false;
 	this.mesh.castShadow = true;
-	this.mesh.position.set(0, 15, 0);
+	
 	this.add(this.mesh);
 		
 	this.distFromObject = 800;
 	this.maxCentroidDistance = 10;
-	this.mass = 100;
+	this.mass = 4000;
 }
 
 TestObject.prototype.updatedShaper = function(shaper){
@@ -90,32 +93,35 @@ TestObject.prototype.getVertices = function(index, mousePoint){
 
 		 var result = this.calculateRepulsionForce(targetVertices[i],mousePoint);
 		
-		if(result.length() !== 0){
+		if(result.length() !== 0 && targetVertices[i].x > 0 && targetVertices[i].z> 0 ){
+			targetVertices[i].sub(result);
 
-			if(targetVertices[i].x )
-			targetVertices[i].x -= result.x;
-			targetVertices[i].z -= result.y;//add(result);
-		}
+			
+	}
+	else{
+			targetVertices[i].add(result);
+			
 	}
 
 	geo.verticesNeedUpdate = true;	
 
+	}
+}
+
+TestObject.prototype.updateDisplacementMap = function(vec){
+
 }
 
 TestObject.prototype.calculateRepulsionForce = function(vec1, vec2){
-	var diff = new THREE.Vector2();
-	var v1 = new THREE.Vector2();
-	v1.x = vec1.x;
-	v1.y = vec1.y;
-	// v1.z = vec1.y;
-	
-	var v2 = new THREE.Vector2();
-	v2.x = vec2.x;
-	v2.y = vec2.y;
-	// v2.z = vec2.y;
-	diff.subVectors(v1, v2);
+	var diff = new THREE.Vector3();
+
+	diff.subVectors(vec1, vec2);
 	
 	var d = diff.length();
+	if(d < 10){
+		console.log(d);
+		d = 10;
+	}
 
 	var power = this.mass/(d*d);
 	// console.log(power)

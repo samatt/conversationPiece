@@ -8,7 +8,7 @@ Room.prototype.init = function()
 {
         // right wall
         var geo = new THREE.PlaneGeometry( 1000, 600, 150, 150);
-        var mesh = new THREE.Mesh(geo, resMgr.materials.walls);
+        var mesh = new THREE.Mesh(geo, resMgr.materials.plaster);
         
         mesh.position.x = 500;
         mesh.position.y = 250;
@@ -19,7 +19,7 @@ Room.prototype.init = function()
 
         // left wall
         geo = new THREE.PlaneGeometry( 1000, 600, 30, 30);
-        mesh = new THREE.Mesh(geo, resMgr.materials.walls);
+        mesh = new THREE.Mesh(geo, resMgr.materials.plaster);
         mesh.position.x = -500;
         mesh.position.y = 250;
         mesh.receiveShadow = true;
@@ -29,7 +29,7 @@ Room.prototype.init = function()
 
         // front wall
         geo = new THREE.PlaneGeometry( 1000, 600, 150, 150);
-        mesh = new THREE.Mesh(geo, resMgr.materials.walls);
+        mesh = new THREE.Mesh(geo, resMgr.materials.plaster);
         // mesh.receiveShadow = false      ;
         mesh.castShadow = false      ;
         mesh.position.z = -500;
@@ -40,7 +40,7 @@ Room.prototype.init = function()
 
         // left wall
         geo = new THREE.PlaneGeometry( 1000, 600, 150, 150);
-        mesh = new THREE.Mesh(geo, resMgr.materials.walls);
+        mesh = new THREE.Mesh(geo, resMgr.materials.plaster);
         mesh.receiveShadow = true      ;
         mesh.castShadow = false      ;
         mesh.position.z = 500;
@@ -49,11 +49,7 @@ Room.prototype.init = function()
         this.add(mesh);
 
         // right wall
-        // geo = new THREE.PlaneGeometry( 1400, 600, 10, 10);
-        // mesh = new THREE.Mesh(geo, resMgr.materials.walls);
-        // mesh.rotation.y = -Math.PI/2;
-        // mesh.position.set(400, 300, 400);
-        // this.add(mesh);
+        
 
         // stool
         geo = new THREE.CubeGeometry( 200, 30, 200, 1, 1, 1);
@@ -62,6 +58,28 @@ Room.prototype.init = function()
         mesh.castShadow = true;
         mesh.receiveShadow = true;
         this.add(mesh);
+
+
+        //floor
+        geo = new THREE.PlaneGeometry(1000, 1000, 1, 1);
+        mesh = new THREE.Mesh(geo, resMgr.materials.wood);
+        mesh.receiveShadow = true;
+        mesh.rotation.x = -Math.PI/2;
+        mesh.position.y = -50;
+        mesh.receiveShadow = true;
+        this.add(mesh);
+
+
+        //ceiling
+        geo = new THREE.PlaneGeometry(1000, 1000, 1, 1);
+        mesh = new THREE.Mesh(geo, resMgr.materials.plaster);
+        mesh.receiveShadow = true;
+        mesh.rotation.x = Math.PI/2;
+        mesh.rotation.x = Math.PI/2;
+        mesh.position.y = 550;
+        mesh.receiveShadow = true;
+        this.add(mesh);
+
 
 
 }
