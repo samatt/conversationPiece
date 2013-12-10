@@ -246,8 +246,8 @@ function onKeyDown(evt)
     }
     else if (keyCode == 83) // 's'
     {
-        console.log(camera.position);
-        console.log(controls.target);
+        var audioTag = document.getElementById("audio");
+        audioTag.play()
         // object.extrudeFace();
         if (!keyPressed[keyCode]) {
             keyPressed[keyCode] = true;
