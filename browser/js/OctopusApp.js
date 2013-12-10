@@ -8,7 +8,7 @@ var octopus = null;
 var genome = null;
 
 var clock = null;
-
+var shapeMappingData = [];
 var animating = true;
 
 var resMgr = null;
@@ -102,7 +102,7 @@ function initSceneLights()
     spotLight.exponent = 1;
     spotLight.position.set(-200, 200, -200);
     spotLight.target.position.set(0, 0, 0);
-    spotLight.castShadow = true;
+    spotLight.castShadow = false;
     spotLight.shadowDarkness = 0.2;
     // spotLight.shadowCameraVisible = true;
     scene.add(spotLight);
@@ -140,9 +140,6 @@ function newUser(video, pos,index ){
 
     scene.add(user);
     users.push(user);
-
-    // material.needsUpdate = true;
-
 }
 
 function removeUser(index){
@@ -153,7 +150,7 @@ function removeUser(index){
 
 function addGui()
 {
-
+/*
     var gui = new dat.GUI();
 
 
@@ -172,7 +169,7 @@ function addGui()
     f3.add(this,'radius',10,1000);
     // f3.add(this,'speed',0.1,1.0);
     
-
+*/
 }
 
 
@@ -265,13 +262,14 @@ function onKeyDown(evt)
     }
     else if (keyCode == 69) // 'e'
     {
+        onGeometryChanged();
         if (!keyPressed[keyCode]) {
             keyPressed[keyCode] = true;
             // export to STL
-            octopus.updateMatrixWorld(true);
-            exporter = new THREE.STLExporter();
-            exporter.exportScene(scene);
-            exporter.sendToServer();
+            // octopus.updateMatrixWorld(true);
+            // exporter = new THREE.STLExporter();
+            // exporter.exportScene(scene);
+            // exporter.sendToServer();
         }
     }
 }
@@ -286,6 +284,7 @@ function onKeyUp(evt)
 function onMouseDown(event)
 {
     event.preventDefault();
+    checkForIntersection(event)
     // mousePos.x = event.x;    
     // mousePos.y = event.y; 
 }
@@ -326,7 +325,7 @@ function onMouseMove(event)
 {
 
    event.preventDefault();
-   checkForIntersection(event)
+   
 
 }
 

@@ -8,6 +8,7 @@
 	<script src="js/libs/dat.gui.js"></script>
 	<script src="js/ResourceManager.js"></script>
 	<script src="js/OctopusApp.js"></script>
+	<script src="js/ShapeParticle.js"></script> 
 	<script src="js/TestObject.js"></script>
 	<script src="js/Shaper.js"></script> 
 	<script src="js/Room.js"></script> 
@@ -62,7 +63,7 @@
 				peer.on('open',peerOpen);           
 				peer.on('call',peerIncomingCall);
 				peer.on('connection', peerConnection);
-				peer.on('close', peerClose);
+				// peer.on('close', peerClose);
 				// peer.on('connection', peerConnection);                 
 
 	    	}, function(err) {

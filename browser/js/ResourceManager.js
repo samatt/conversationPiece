@@ -6,7 +6,7 @@ ResourceManager = function()
 
 ResourceManager.prototype.initMaterials = function()
 {
-	this.materials.white = new THREE.MeshLambertMaterial( { color: 0x888888, ambient: 0x444444 } );
+	this.materials.white = new THREE.MeshLambertMaterial( { color: 0xFFFFFF, ambient: 0x444444 } );
 	this.materials.gray = new THREE.MeshLambertMaterial( { color: 0x444444, ambient: 0x222222 } );
 	this.materials.black = new THREE.MeshLambertMaterial( { color: 0x222222, ambient: 0x111111 } );
 	this.materials.floor = new THREE.MeshLambertMaterial( { color: 0xC6B263, ambient: 0xC6B263 } );
@@ -31,7 +31,7 @@ ResourceManager.prototype.initMaterials = function()
 
 	//Object noise texture
 	var noiseMap = THREE.ImageUtils.loadTexture( "js/Textures/noiseMap.png" );
-	this.materials.object = new THREE.MeshPhongMaterial( { map: noiseMap,  specular: 0xc0c0c0} );
+	this.materials.object = new THREE.MeshPhongMaterial( { map: noiseMap,  specular: 0xc0c0c0 ,color: 0xFFFFFF} );
 	
 
 	//FLoor Wood 

@@ -1,4 +1,4 @@
-  /* PeerJS functions*/
+  // /* PeerJS functions*/
     var newPeer = function(peer_ids){
 
       console.log("Got a new peer: " + peer_ids);
@@ -26,7 +26,7 @@
         // videoElement.src = window.URL.createObjectURL(remoteStream) || remoteStream;
       });
 
-      call.on('close',peerClose);
+      // call.on('close',peerClose);
     }  
     var peerOpen =  function(id) {
         console.log('My peer ID is: ' + id);
