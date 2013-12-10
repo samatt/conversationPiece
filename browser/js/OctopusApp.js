@@ -253,6 +253,15 @@ function onKeyDown(evt)
             keyPressed[keyCode] = true;
         }
     }
+    else if (keyCode == 84) // 't'
+    {
+        var audioTag = document.getElementById("audio");
+        audioTag.pause()
+        // object.extrudeFace();
+        if (!keyPressed[keyCode]) {
+            keyPressed[keyCode] = true;
+        }
+    }
     else if (keyCode == 66) // 'b'
     {
         removeUser(users.length -1 );
